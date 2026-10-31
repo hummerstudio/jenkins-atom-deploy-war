@@ -1,0 +1,14 @@
+{
+  "name": "Deploy WAR to container",
+  "summary": "Deploys a WAR/EAR over the container's management endpoint (Tomcat Manager text API), then reads the application list back to prove it is running.",
+  "author": "hummerstudio",
+  "license": "MIT",
+  "tags": [
+    "official-port",
+    "deploy",
+    "tomcat",
+    "container",
+    "war"
+  ],
+  "homepage": "https://github.com/hummerstudio/jenkins-atom-deploy-war"
+}

@@ -1,0 +1,85 @@
+{
+  "atomCode": "deploy-war",
+  "name": "Deploy WAR to container",
+  "version": "1.0.0",
+  "description": "把 workspace 里的 WAR/EAR 通过容器的管理端点（Tomcat Manager text API）上传部署，部署后回读应用列表，确认该 context path 处于 running 状态。",
+  "execution": {
+    "packagePath": "deploy-war.jar",
+    "language": "java",
+    "target": "$atom_java_path -cp deploy-war.jar com.jenkinschina.atom.sdk.AtomRunner"
+  },
+  "input": {
+    "url": {
+      "label": "容器地址（http://host:8080，或完整的 /manager/text 地址）",
+      "type": "vuex-input",
+      "default": ""
+    },
+    "contextPath": {
+      "label": "Context path（留空则用 war 文件名，ROOT.war 为根）",
+      "type": "vuex-input",
+      "default": ""
+    },
+    "war": {
+      "label": "WAR/EAR 文件（路径或 Ant 风格 glob）",
+      "type": "vuex-input",
+      "default": "**/*.war"
+    },
+    "username": {
+      "label": "管理账号（需要 manager-script 角色）",
+      "type": "vuex-input",
+      "default": ""
+    },
+    "password": {
+      "label": "密码（放凭据里，不要写明文）",
+      "type": "vuex-input",
+      "default": ""
+    },
+    "update": {
+      "label": "同名应用已存在时替换（update=true，等价于插件的重新部署）",
+      "type": "checkbox",
+      "default": "true"
+    },
+    "managerPath": {
+      "label": "Manager 路径（留空则看 url，默认 /manager/text）",
+      "type": "vuex-input",
+      "default": ""
+    },
+    "timeoutSeconds": {
+      "label": "单次上传超时（秒）",
+      "type": "vuex-input",
+      "default": "120"
+    }
+  },
+  "output": {
+    "deployed": {
+      "type": "string",
+      "description": "部署成功的归档数"
+    },
+    "contextPaths": {
+      "type": "string",
+      "description": "部署到的 context path，逗号分隔（ROOT 记作 /）"
+    },
+    "states": {
+      "type": "string",
+      "description": "回读到的状态，形如 /app=running"
+    },
+    "managerUrl": {
+      "type": "string",
+      "description": "实际使用的 manager 地址"
+    },
+    "verified": {
+      "type": "string",
+      "description": "true 表示每个应用都在回读里处于 running"
+    }
+  },
+  "x-jenkins": {
+    "protocol": "jenkins-1",
+    "requires": {
+      "runner": ">=0.4.0"
+    },
+    "secrets": {
+      "password": "",
+      "credentialsId": ""
+    }
+  }
+}

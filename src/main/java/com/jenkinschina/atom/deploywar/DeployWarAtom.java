@@ -152,6 +152,10 @@ public class DeployWarAtom implements AtomTask {
                         .PUT(HttpRequest.BodyPublishers.ofFile(war))
                         .build();
                 response = client.send(request, HttpResponse.BodyHandlers.ofString(StandardCharsets.UTF_8));
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                return AtomResult.error(ErrorType.ENVIRONMENT, 40010,
+                        "cannot reach " + managerBase + " to deploy " + relative + ": " + oneLine(String.valueOf(e.getMessage())));
             } catch (Exception e) {
                 return AtomResult.error(ErrorType.ENVIRONMENT, 40010,
                         "cannot reach " + managerBase + " to deploy " + relative + ": " + oneLine(String.valueOf(e.getMessage())));
@@ -206,6 +210,10 @@ public class DeployWarAtom implements AtomTask {
                         .GET()
                         .build();
                 listing = client.send(request, HttpResponse.BodyHandlers.ofString(StandardCharsets.UTF_8));
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                return AtomResult.error(ErrorType.THIRD_PART, 40019,
+                        "deployed " + relative + " but cannot read the application list back: " + oneLine(e.getMessage()));
             } catch (Exception e) {
                 return AtomResult.error(ErrorType.THIRD_PART, 40019,
                         "deployed " + relative + " but cannot read the application list back: " + oneLine(e.getMessage()));

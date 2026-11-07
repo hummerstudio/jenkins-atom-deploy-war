@@ -8,7 +8,7 @@
 ## 用法
 
 ```bash
-./build.sh && ./tools/smoke.sh
+mvn verify   # build + src/test/java/atom/DeployWarIT.java（对着 tools/fake_manager.py）
 ```
 
 输入：
@@ -63,7 +63,7 @@ HTTP 200
 
 ## smoke 验的是什么
 
-`tools/smoke.sh` 起一个假的 Tomcat manager（`tools/fake_manager.py`，按协议重写，不是照着原子写的），
+`src/test/java/atom/DeployWarIT.java` 起一个假的 Tomcat manager（`tools/fake_manager.py`，按协议重写，不是照着原子写的），
 外加一段可选的真实容器验证（给 `REAL_DEPLOY_URL` / `REAL_DEPLOY_USER` / `REAL_DEPLOY_PASSWORD` 就跑）。
 
 假端点自己算该算的东西：它把收到的字节**自己哈希**并落盘，所以"部署上去的到底是不是 workspace 里那个文件"
